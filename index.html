@@ -1,0 +1,580 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Aura</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #2b0a3d, #6a0dad);
+      color: white;
+      text-align: center;
+      margin-left: 250px;
+    }
+
+    .logo-container {
+      padding: 25px 20px 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, #a855f7, #c084fc);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5em;
+      font-weight: 800;
+      margin-bottom: 10px;
+      box-shadow: 0 8px 20px rgba(168, 85, 247, 0.4);
+      letter-spacing: 1px;
+    }
+
+    .brand-name {
+      font-size: 1.3em;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, #a855f7, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+    }
+
+    nav {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 250px;
+      height: 100vh;
+      background: rgba(43, 10, 61, 0.98);
+      backdrop-filter: blur(15px);
+      box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 0;
+      overflow-y: auto;
+    }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      flex: 1;
+    }
+
+    nav li {
+      margin: 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 1em;
+      font-weight: 600;
+      transition: 0.3s;
+      padding: 15px 25px;
+      border-radius: 0;
+      display: block;
+      border-left: 4px solid transparent;
+    }
+
+    nav a:hover {
+      background: rgba(168, 85, 247, 0.3);
+      border-left-color: #a855f7;
+      color: white;
+    }
+
+    .nav-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      width: 100%;
+    }
+
+    .profile-icon {
+      position: fixed;
+      top: 20px;
+      left: 125px;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, #a855f7, #c084fc);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.8em;
+      transition: all 0.3s ease;
+      box-shadow: 
+        0 0 30px rgba(168, 85, 247, 0.6),
+        0 0 60px rgba(168, 85, 247, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+      border: 3px solid rgba(255, 255, 255, 0.4);
+      z-index: 999;
+      backdrop-filter: blur(10px);
+    }
+
+    .profile-icon::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      background: linear-gradient(135deg, #a855f7, #c084fc);
+      border-radius: 50%;
+      z-index: -1;
+      opacity: 0.5;
+      animation: glow-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.3; }
+    }
+
+    .profile-icon:hover {
+      transform: translateX(-50%) scale(1.15);
+      box-shadow: 
+        0 0 50px rgba(168, 85, 247, 0.8),
+        0 0 80px rgba(168, 85, 247, 0.4),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, rgba(43, 10, 61, 0.95), rgba(106, 10, 173, 0.95));
+      margin: 10% auto;
+      padding: 40px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 15px 50px rgba(168, 85, 247, 0.4);
+      border: 2px solid rgba(168, 85, 247, 0.3);
+      animation: slideIn 0.3s;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .close-modal {
+      color: #c084fc;
+      float: right;
+      font-size: 2em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .close-modal:hover {
+      color: white;
+    }
+
+    .modal h2 {
+      margin-top: 0;
+      font-size: 1.8em;
+      color: white;
+    }
+
+    .modal input {
+      width: 100%;
+      padding: 12px;
+      margin: 12px 0;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+
+    .modal button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background: linear-gradient(135deg, #a855f7, #c084fc);
+      border: none;
+      border-radius: 30px;
+      color: white;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .modal button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(168, 85, 247, 0.4);
+    }
+
+    nav a:hover {
+      background: #a855f7;
+      color: white;
+    }
+
+    header {
+  padding: 50px 20px;
+}
+
+h1 {
+  font-size: 3em;
+  letter-spacing: 2px;
+}
+
+p {
+  font-size: 1.2em;
+  opacity: 0.8;
+}
+
+.card {
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 30px;
+  margin: 30px auto;
+  width: 90%;
+  max-width: 400px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.price {
+  font-size: 2em;
+  margin: 20px 0;
+}
+
+input {
+  width: 90%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+
+button {
+  background: #a855f7;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 30px;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #c084fc;
+}
+
+footer {
+  margin-top: 50px;
+  padding: 20px;
+  font-size: 0.9em;
+  opacity: 0.6;
+}
+
+.about-section {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: 30px auto;
+}
+
+.about-section h2 {
+  font-size: 2.2em;
+  margin-bottom: 20px;
+}
+
+.about-section p {
+  line-height: 1.8;
+  font-size: 1.05em;
+  margin: 15px 0;
+}
+
+.features-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  max-width: 1000px;
+  margin: 50px auto 30px;
+  padding: 0 20px;
+}
+
+.feature-card {
+  background: rgba(255,255,255,0.08);
+  border-radius: 15px;
+  padding: 25px 30px;
+  flex: 1;
+  min-width: 200px;
+  max-width: 280px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  font-size: 1.1em;
+  font-weight: bold;
+  line-height: 1.6;
+}
+
+.feature-card .icon {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.feature-card .title {
+  font-size: 1.3em;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.feature-card .description {
+  font-size: 0.95em;
+  font-weight: normal;
+  opacity: 0.9;
+}
+
+.faq-section {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: 40px auto;
+}
+
+.faq-section h2 {
+  font-size: 2.2em;
+  margin-bottom: 30px;
+}
+
+.faq-item {
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 20px;
+  margin: 15px 0;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.faq-item:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.faq-item h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.1em;
+  text-align: left;
+}
+
+.faq-item p {
+  margin: 0;
+  text-align: left;
+  font-size: 0.95em;
+  opacity: 0.85;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 30px 0 20px 0;
+  flex-wrap: wrap;
+}
+
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  background: rgba(168, 85, 247, 0.8);
+  border-radius: 50%;
+  color: white;
+  text-decoration: none;
+  font-size: 1.5em;
+  transition: 0.3s;
+  border: 2px solid transparent;
+}
+
+.social-links a:hover {
+  background: #a855f7;
+  transform: scale(1.1);
+  border-color: #c084fc;
+}
+
+  </style>
+</head>
+<body>
+  <div class="logo-container">
+    <div class="logo">A</div>
+    <p class="brand-name">ProjectAura</p>
+  </div>
+
+  <nav>
+    <div class="nav-header">
+      <div class="profile-icon" onclick="openLoginModal()">
+        <i class="fas fa-user"></i>
+      </div>
+    </div>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#membership">Membership</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </nav>
+
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeLoginModal()">&times;</span>
+      <h2>Login</h2>
+      <input type="email" placeholder="Email Address" required>
+      <input type="password" placeholder="Password" required>
+      <button onclick="handleLogin()">Sign In</button>
+      <p style="text-align: center; margin-top: 15px; opacity: 0.7;">Coming soon!</p>
+    </div>
+  </div>
+
+  <script>
+    function openLoginModal() {
+      document.getElementById('loginModal').style.display = 'block';
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').style.display = 'none';
+    }
+
+    function handleLogin() {
+      alert('Login feature coming soon!');
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('loginModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
+
+  <header id="home">
+    <h1>Project Aura</h1>
+    <p>Premium Experience. Powerful Protection.</p>
+    <p><strong>App launching soon</strong></p>
+  </header>
+
+  <div class="about-section" id="about">
+    <h2>About Project Aura</h2>
+    <p>Project Aura is a revolutionary digital security and privacy platform designed to empower users with premium protection and peace of mind. Our mission is to make advanced security accessible to everyone.</p>
+    <p>With cutting-edge technology and user-friendly design, we provide a comprehensive solution that combines powerful protection with an intuitive experience. Whether you're protecting your personal data or securing your digital life, Project Aura has you covered.</p>
+  </div>
+
+  <div class="card">
+    <h2>Join the Waitlist</h2>
+    <p>Be the first to access Project Aura when we launch.</p><!-- Netlify Form -->
+<form name="waitlist" method="POST" data-netlify="true">
+  <input type="hidden" name="form-name" value="waitlist">
+  <input type="text" name="name" placeholder="Your Name" required>
+  <input type="email" name="email" placeholder="Your Email" required>
+  <button type="submit">Join Waitlist</button>
+</form>
+
+  </div>
+
+  <div class="card" id="membership">
+    <h2>Premium Membership</h2>
+    <p>Unlock full access with a one-time payment.</p>
+    <div class="price">R199 Once-Off</div>
+    <button onclick="alert('Payment integration coming soon')">Get Premium</button>
+  </div>
+
+  <section id="features">
+    <div class="features-container">
+    <div class="feature-card">
+      <span class="icon">🔒</span>
+      <span class="title">Secure & Private</span>
+      <span class="description">Your data is protected with enterprise grade security</span>
+    </div>
+    <div class="feature-card">
+      <span class="icon">⚡</span>
+      <span class="title">Fast & Powerful</span>
+      <span class="description">Built for speed, performance and reliability</span>
+    </div>
+    <div class="feature-card">
+      <span class="icon">✨</span>
+      <span class="title">Premium Experience</span>
+      <span class="description">Beautiful design with powerful features you'll love</span>
+    </div>
+  </div>
+  </section>
+
+  <section class="faq-section" id="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>❓ What is Project Aura?</h3>
+      <p>Project Aura is a premium digital security and privacy platform designed to protect your data with enterprise-grade encryption and user-friendly features.</p>
+    </div>
+    <div class="faq-item">
+      <h3>❓ How much does it cost?</h3>
+      <p>Project Aura Premium membership costs R199 as a one-time payment for lifetime access. No recurring fees.</p>
+    </div>
+    <div class="faq-item">
+      <h3>❓ When will Project Aura launch?</h3>
+      <p>We're launching soon! Join our waitlist to be among the first to get access when we go live.</p>
+    </div>
+    <div class="faq-item">
+      <h3>❓ Is my data really secure?</h3>
+      <p>Yes! We use enterprise-grade security protocols and the latest encryption standards to protect your data. Your privacy is our priority.</p>
+    </div>
+    <div class="faq-item">
+      <h3>❓ Can I try it before paying?</h3>
+      <p>Absolutely! Join our waitlist to get early access and experience Project Aura before making a purchase decision.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="social-links">
+      <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://tiktok.com" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://twitter.com" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
+      <a href="https://youtube.com" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+    </div>
+    <p>©️ 2026 Project Aura. All rights reserved.</p>
+  </footer></body>
+</html>
